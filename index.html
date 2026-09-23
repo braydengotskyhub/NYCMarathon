@@ -247,7 +247,7 @@
     font-family:var(--sans);font-variation-settings:'wdth' 96,'wght' 700;
     font-size:1.3rem;margin-top:1.9rem;
   }
-  .sig-name{display:block;padding-left:2.6rem;margin-top:.15rem}
+  .sig-name{display:block;margin-top:.15rem}
 
   /* give cards */
   .give-grid{display:grid;gap:1.1rem;grid-template-columns:1fr}
@@ -299,6 +299,7 @@
     padding:.95rem 0;border-bottom:1px solid var(--rule);align-items:baseline;
   }
   .d-name{font-family:var(--sans);font-variation-settings:'wdth' 96,'wght' 700;font-size:1.02rem}
+  .d-name.anon{font-variation-settings:'wdth' 92,'wght' 550;color:var(--ink-soft);font-style:italic}
   .d-amt{
     font-family:var(--sans);font-variation-settings:'wdth' 90,'wght' 700;font-size:1.02rem;
     color:var(--orange);text-align:right;white-space:nowrap;
@@ -418,9 +419,55 @@
     font-variation-settings:'wdth' 86,'wght' 500;color:var(--ink-soft);margin-left:.45rem;
   }
   .notes-empty{color:var(--ink-soft);font-style:italic;margin:0}
+  .form-embed{
+    width:100%;min-height:min(78vh,720px);border:1px solid var(--rule);
+    border-radius:6px;background:var(--card);display:block;
+  }
   .live-note{
     font-family:var(--sans);font-variation-settings:'wdth' 86,'wght' 550;
     font-size:.78rem;color:var(--ink-soft);margin:1rem 0 0;
+  }
+
+
+  /* ---------- about EMC ---------- */
+  .emc-stats{
+    display:grid;gap:1px;background:var(--rule);
+    border:1px solid var(--rule);border-radius:6px;overflow:hidden;
+    grid-template-columns:1fr 1fr;margin:0 0 2.2rem;
+  }
+  @media (min-width:840px){.emc-stats{grid-template-columns:repeat(4,1fr)}}
+  .emc-stat{background:var(--paper);padding:1.1rem 1.15rem}
+  .emc-stat b{
+    display:block;font-family:var(--sans);
+    font-variation-settings:'wdth' 96,'wght' 800;
+    font-size:clamp(1.5rem,1.2rem + 1.2vw,2rem);
+    line-height:1;letter-spacing:-.02em;color:var(--orange);margin-bottom:.5rem;
+  }
+  .emc-stat span{
+    display:block;font-family:var(--sans);
+    font-variation-settings:'wdth' 88,'wght' 500;
+    font-size:.8rem;line-height:1.4;color:var(--ink-soft);
+  }
+  .emc-cols{display:grid;gap:2rem;grid-template-columns:1fr;align-items:start}
+  @media (min-width:900px){.emc-cols{grid-template-columns:1.2fr .8fr;gap:3rem}}
+  .emc-body{max-width:62ch}
+  .emc-body p{margin:0 0 1.2rem}
+  .emc-body p:last-child{margin:0}
+  .emc-pull{
+    margin:0;padding:1.4rem 1.5rem;
+    background:var(--navy);color:var(--on-navy);border-radius:6px;
+    border-left:4px solid var(--orange);max-width:56ch;
+  }
+  .emc-pull p{margin:0 0 .9rem;line-height:1.55}
+  .emc-pull p:last-child{margin:0}
+  .emc-pull em{color:#fff}
+  .emc-pull-tag{
+    font-family:var(--sans);font-variation-settings:'wdth' 88,'wght' 600;
+    font-size:.92rem;color:var(--orange-lift);
+  }
+  .emc-link{margin-top:1.8rem !important;
+    font-family:var(--sans);font-variation-settings:'wdth' 90,'wght' 650;
+    font-size:.95rem;margin:0;
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -510,7 +557,38 @@
   </div>
 </section>
 
-<section id="give">
+<section id="about">
+  <div class="wrap">
+    <h2 class="section-title">Where the money actually goes</h2>
+    <p class="section-lede">Every Mother Counts has been working on this for fifteen years. A short version of what they do.</p>
+
+    <div class="emc-stats">
+      <div class="emc-stat"><b>2010</b><span>Founded by Christy Turlington Burns, after she nearly died giving birth</span></div>
+      <div class="emc-stat"><b>$48M+</b><span>Invested in community-led programs, advocacy and awareness</span></div>
+      <div class="emc-stat"><b>~2M</b><span>Women, families and health workers supported so far</span></div>
+      <div class="emc-stat"><b>2 min</b><span>How often a woman dies somewhere in the world from pregnancy or childbirth</span></div>
+    </div>
+
+    <div class="emc-cols">
+      <div class="emc-body">
+      <p>Christy Turlington Burns hemorrhaged after her daughter was born in 2003. She survived because she was in a hospital with people who knew what to do. Learning how many women die every year from complications that are treatable led her to make a documentary, <em>No Woman, No Cry</em>, and then to start Every Mother Counts in 2010.</p>
+
+      <p>Since then the organization has put more than $48 million into community-led maternal health programs, advocacy and awareness, and has reached close to two million women, families and health workers. It funds care in the United States alongside countries including Haiti, Uganda, Bangladesh, India, Tanzania and Guatemala.</p>
+
+      <p>The American part surprises people. The United States has the highest maternal mortality rate of any wealthy country, and the burden falls hardest on Black and Indigenous women. This is not only a problem somewhere else.</p>
+      </div>
+
+      <div class="emc-pull">
+      <p>There is a reason this charity is so tied up with running. Turlington Burns first thought of distance running as a way to talk about pregnancy and birth while she was training for the New York City Marathon. Her team made a film, <em>Every Mile, Every Mother</em>, about exactly that: how far a woman may have to travel before she reaches anyone qualified to help her deliver.</p>
+        <p class="emc-pull-tag">Which is the part I keep thinking about while training. For a lot of women, the distance is the emergency.</p>
+      </div>
+    </div>
+
+    <p class="emc-link"><a href="https://everymothercounts.org" target="_blank" rel="noopener">More at everymothercounts.org</a></p>
+  </div>
+</section>
+
+<section id="give" class="band">
   <div class="wrap">
     <h2 class="section-title">Two ways to give</h2>
     <p class="section-lede">One doubles your gift. The other goes straight to Every Mother Counts. Both help.</p>
@@ -551,7 +629,7 @@
   </div>
 </section>
 
-<section id="donors" class="band">
+<section id="donors">
   <div class="wrap">
     <h2 class="section-title">The people behind the miles</h2>
     <p class="section-lede" style="margin-bottom:1.4rem">Everyone who has chipped in so far.</p>
@@ -562,7 +640,7 @@
   </div>
 </section>
 
-<section id="notes">
+<section id="notes" class="band">
   <div class="wrap">
     <h2 class="section-title">Notes people have left</h2>
     <p class="section-lede">Encouragement, good luck, and a few things I&rsquo;ll be thinking about at mile 20.</p>
@@ -570,13 +648,15 @@
     <div class="notes-grid" id="notesGrid" hidden></div>
     <p class="notes-empty" id="notesEmpty">No messages yet. Yours would be the first.</p>
 
-    <div class="btn-row" style="margin-top:1.6rem">
-      <a class="btn btn-outline" href="https://docs.google.com/forms/d/e/1FAIpQLSc2OMeaDfp2JIfIwvsdI6u_ahYFMjKzI5LwxLDE3J97mPySxw/viewform" target="_blank" rel="noopener">Write a message</a>
+    <div id="formArea" style="margin-top:1.6rem">
+      <div class="btn-row">
+        <a class="btn btn-outline" href="https://docs.google.com/forms/d/e/1FAIpQLSc2OMeaDfp2JIfIwvsdI6u_ahYFMjKzI5LwxLDE3J97mPySxw/viewform" target="_blank" rel="noopener">Write a message</a>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="share" class="band">
+<section id="share">
   <div class="wrap">
     <h2 class="section-title">Pass it along</h2>
     <p class="section-lede">Sharing this with one more person is worth as much as a donation. Maybe more.</p>
@@ -616,30 +696,40 @@
      EDIT HERE
      ==========================================================
 
-     To make the page update itself, publish each Google Sheet tab
-     to the web as CSV (File > Share > Publish to web > choose the
-     tab > Comma-separated values) and paste the URLs below.
+     DATA points at files that live next to index.html in your repo,
+     or at a Google Sheet tab published to the web as CSV. Excel works:
+     commit the .xlsx and put its filename below. Update the page by
+     uploading a newer copy of the file to GitHub.
 
-     Publishing a tab makes THAT TAB readable by anyone with the URL,
-     so publish a tab that holds only what you want public. Do not
-     publish a tab containing email addresses or phone numbers.
+       donations: "Marathon_Donation_Tracking.xlsx"
+       donations: "donations.csv"
+       donations: "https://docs.google.com/.../pub?output=csv"
 
-     Donations tab needs columns: Date, From, Amount, JCG Amount
-     Messages tab needs columns:  Name, Message, Approved
-     (only rows where Approved is TRUE/yes/x are shown)
+     Donations columns: Date, From, Amount, JCG Amount
+     Messages columns:  Name, Message, Approved
+     (only rows where Approved is TRUE / yes / x appear on the page)
 
-     Leave a URL blank and the page uses the numbers baked in below.
+     Anything you commit or publish is public. Keep email addresses
+     and phone numbers out of these files entirely.
+
+     Leave a field blank and the page uses the numbers baked in below.
   */
 
-  var SHEETS = {
-    donations: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTjADvZqnz-LhTW2fEuxMd4mUcD_mav6k8x9OA8jHOFbkAlTuZjFineQiqyqOfSLoE1LcB7_RpeNn-E/pub?gid=1642555919&single=true&output=csv",
-    messages:  ""
+  var DATA = {
+    donations:    "",
+    donationsTab: "",   // Excel only: which tab. Blank = the first one.
+    messages:     "",
+    messagesTab:  ""
   };
+
+  // Optional. Paste a Microsoft Forms or Google Forms EMBED url and the
+  // form appears inside the page instead of as a link out.
+  var FORM_EMBED = "";
 
   var GOAL = 4000;
   var RACE = "2026-11-01";
 
-  // Fallback, used until the sheets are wired up or if they can't be reached.
+  // Fallback, used until the files above are wired up or if they can't be read.
   var RAISED = 1212;
   var DONORS = [
     { id:3, name:"Mikayla",    amount:50,  matched:100,  date:"2026-09-22", note:"" },
@@ -740,7 +830,7 @@
     return "";
   }
 
-  function fetchCSV(url){
+  function fetchText(url){
     return new Promise(function(resolve, reject){
       var settled = false;
       var timer = setTimeout(function(){
@@ -908,7 +998,7 @@
         new Date(d.date + "T12:00:00").toLocaleDateString("en-US", { month:"short", day:"numeric" }) : "";
       var match = d.matched ? '<span class="d-match">doubled to ' + money(d.matched) + '</span>' : "";
       var note = d.note ? '<span class="d-note"></span>' : "";
-      return '<li><span class="d-name"></span>' + amt +
+      return '<li><span class="d-name' + (d.anon ? ' anon' : '') + '"></span>' + amt +
              '<span class="d-meta">' + when + '</span>' + match + note + '</li>';
     }).join("");
 
@@ -948,26 +1038,67 @@
 
   /* ============ live data ============ */
 
+  // SheetJS is only pulled in when an .xlsx is actually configured.
+  var sheetjs = null;
+  function loadSheetJS(){
+    if(window.XLSX) return Promise.resolve();
+    if(!sheetjs){
+      sheetjs = new Promise(function(res, rej){
+        var el = document.createElement("script");
+        el.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+        el.onload = function(){ res(); };
+        el.onerror = function(){ rej(new Error("excel reader unavailable")); };
+        document.head.appendChild(el);
+      });
+    }
+    return sheetjs;
+  }
+
+  function loadWorkbook(src, tab){
+    return loadSheetJS()
+      .then(function(){ return fetch(src, { cache: "no-store" }); })
+      .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.arrayBuffer(); })
+      .then(function(buf){
+        var wb = XLSX.read(new Uint8Array(buf), { type: "array", cellDates: true });
+        var ws = wb.Sheets[tab || wb.SheetNames[0]];
+        if(!ws) throw new Error("tab not found: " + tab);
+        return XLSX.utils.sheet_to_json(ws, { header: 1, raw: false, dateNF: "yyyy-mm-dd", defval: "" });
+      });
+  }
+
+  // Returns rows (array of arrays) from a .xlsx, a .csv, or a published CSV url.
+  function loadTable(src, tab){
+    if(!src) return Promise.reject(new Error("not configured"));
+    if(/\.xlsx?(\?|$)/i.test(src)) return loadWorkbook(src, tab);
+    return fetchText(src).then(parseCSV);
+  }
+
   function loadDonations(){
-    if(!SHEETS.donations) return Promise.reject(new Error("not configured"));
-    return fetchCSV(SHEETS.donations).then(function(txt){
-      var objs = toObjects(parseCSV(txt), {
+    return loadTable(DATA.donations, DATA.donationsTab).then(function(rows){
+      var objs = toObjects(rows, {
         date:    ["date","timestamp"],
         name:    ["from","name","donor","who"],
         amount:  ["amount","gift","donation"],
-        matched: ["jcg amount","match amount","matched","company match","match"]
+        matched: ["jcg amount","match amount","matched","company match","match"],
+        note:    ["comment","comments","note","message"],
+        anon:    ["anonymous","anon","hide","private"]
       }).filter(function(o){ return o.name && num(o.amount) > 0; });
 
       if(!objs.length) throw new Error("no rows");
 
       var total = 0;
       DONORS = objs.map(function(o, i){
-        var amt = num(o.amount), mt = num(o.matched);
-        total += amt + mt;
+        var amt = num(o.amount), mt = num(o.matched), hidden = yes(o.anon);
+        total += amt + mt;   // anonymous gifts still count toward the goal
         return {
-          id: i + 1, name: o.name, amount: amt,
-          matched: mt > 0 ? amt + mt : 0,
-          date: isoDate(o.date), note: ""
+          id: i + 1,
+          name: hidden ? "Anonymous" : o.name,
+          anon: hidden,
+          amount: amt,
+          showAmount: !hidden,
+          matched: (mt > 0 && !hidden) ? amt + mt : 0,
+          date: isoDate(o.date),
+          note: o.note || ""
         };
       });
       RAISED = Math.round(total);
@@ -975,9 +1106,9 @@
   }
 
   function loadNotes(){
-    if(!SHEETS.messages){ renderNotes([]); return; }
-    fetchCSV(SHEETS.messages).then(function(txt){
-      var objs = toObjects(parseCSV(txt), {
+    if(!DATA.messages){ renderNotes([]); return; }
+    loadTable(DATA.messages, DATA.messagesTab).then(function(rows){
+      var objs = toObjects(rows, {
         date:     ["timestamp","date"],
         name:     ["name","from","who"],
         message:  ["message","comment","note","encouragement"],
@@ -1060,13 +1191,25 @@
     start();
   })();
 
+  (function formArea(){
+    var host = $("formArea");
+    if(!host || !FORM_EMBED) return;
+    var f = document.createElement("iframe");
+    f.src = FORM_EMBED;
+    f.className = "form-embed";
+    f.setAttribute("loading", "lazy");
+    f.setAttribute("title", "Leave a message");
+    host.innerHTML = "";
+    host.appendChild(f);
+  })();
+
   /* ============ go ============ */
 
   $("fill").style.width = "0%";
 
   function draw(){ paintMeter(true); renderWall(); }
 
-  if(SHEETS.donations){
+  if(DATA.donations){
     // wait briefly for live numbers so the total doesn't visibly jump
     loadDonations().then(draw)["catch"](function(){ draw(); });
   } else {
