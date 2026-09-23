@@ -357,6 +357,16 @@
   }
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
 
+  /* only ever shown when ?debug=1 is on the url */
+  .debug{
+    position:fixed;left:0;right:0;bottom:0;z-index:60;margin:0;
+    max-height:52vh;overflow:auto;background:#07131E;color:#BFE3FF;
+    font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    padding:1rem 1.1rem calc(1rem + env(safe-area-inset-bottom,0px));
+    border-top:2px solid var(--orange);white-space:pre-wrap;
+  }
+  .debug b{color:#FF7A45}
+
 
   /* ---------- next marker + borough guide ---------- */
   .nextup{
@@ -687,6 +697,7 @@
 </footer>
 
 <div class="toast" id="toast">Copied</div>
+<pre class="debug" id="debugPanel" hidden></pre>
 
 <script>
 (function(){
@@ -703,7 +714,7 @@
 
        donations: "Marathon_Donation_Tracking.xlsx"
        donations: "donations.csv"
-       donations: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTjADvZqnz-LhTW2fEuxMd4mUcD_mav6k8x9OA8jHOFbkAlTuZjFineQiqyqOfSLoE1LcB7_RpeNn-E/pub?gid=1642555919&single=true&output=csv"
+       donations: "https://docs.google.com/.../pub?output=csv"
 
      Donations columns: Date, From, Amount, JCG Amount
      Messages columns:  Name, Message, Approved
@@ -716,7 +727,7 @@
   */
 
   var DATA = {
-    donations:    "",
+    donations:    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTjADvZqnz-LhTW2fEuxMd4mUcD_mav6k8x9OA8jHOFbkAlTuZjFineQiqyqOfSLoE1LcB7_RpeNn-E/pub?gid=1642555919&single=true&output=csv",
     donationsTab: "",   // Excel only: which tab. Blank = the first one.
     messages:     "",
     messagesTab:  ""
@@ -785,6 +796,14 @@
 
   function norm(s){ return String(s == null ? "" : s).trim().toLowerCase(); }
 
+  var DEBUG = /[?&]debug=1/.test(location.search), dbgLines = [];
+  function dbg(label, value){
+    if(!DEBUG) return;
+    dbgLines.push("<b>" + label + "</b>  " + value);
+    var el = document.getElementById("debugPanel");
+    if(el){ el.hidden = false; el.innerHTML = dbgLines.join("\n"); }
+  }
+
   // Sheets often carry title and total rows above the real header,
   // so find the first row that actually looks like column names.
   function toObjects(rows, keys){
@@ -796,7 +815,11 @@
       }
       if(hits >= 2){ headerAt = r; header = cells; break; }
     }
-    if(headerAt === -1) return [];
+    if(headerAt === -1){
+      dbg("HEADER", "not found. Looked at the first 20 rows for a row naming at least two known columns.");
+      return [];
+    }
+    dbg("HEADER", "found on row " + (headerAt + 1) + ": " + header.join(" | "));
 
     var idx = {};
     for(var key in keys){
@@ -805,6 +828,11 @@
         var at = header.indexOf(keys[key][a]);
         if(at !== -1){ idx[key] = at; break; }
       }
+    }
+    if(DEBUG){
+      var report = [];
+      for(var kk in idx) report.push(kk + "=" + (idx[kk] === -1 ? "NOT FOUND" : "col " + (idx[kk] + 1)));
+      dbg("COLUMNS", report.join(", "));
     }
     return rows.slice(headerAt + 1).map(function(r){
       var o = {};
@@ -1069,6 +1097,7 @@
   // Returns rows (array of arrays) from a .xlsx, a .csv, or a published CSV url.
   function loadTable(src, tab){
     if(!src) return Promise.reject(new Error("not configured"));
+    dbg("FETCH", src.slice(0, 90) + (src.length > 90 ? "..." : ""));
     if(/\.xlsx?(\?|$)/i.test(src)) return loadWorkbook(src, tab);
     return fetchText(src).then(parseCSV);
   }
@@ -1102,6 +1131,9 @@
         };
       });
       RAISED = Math.round(total);
+      dbg("ROWS", DONORS.length + " donations read");
+      dbg("TOTAL", "$" + RAISED + " (gifts plus match)");
+      dbg("FIRST", DONORS.length ? JSON.stringify(DONORS[0]) : "none");
     });
   }
 
@@ -1211,7 +1243,13 @@
 
   if(DATA.donations){
     // wait briefly for live numbers so the total doesn't visibly jump
-    loadDonations().then(draw)["catch"](function(){ draw(); });
+    loadDonations().then(function(){
+      dbg("RESULT", "live data in use");
+      draw();
+    })["catch"](function(e){
+      dbg("RESULT", "FELL BACK to the built-in numbers. Reason: " + (e && e.message ? e.message : e));
+      draw();
+    });
   } else {
     draw();
   }
