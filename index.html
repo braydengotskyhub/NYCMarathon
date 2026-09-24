@@ -305,7 +305,7 @@
   .amt b{color:var(--orange);font-variation-settings:'wdth' 90,'wght' 700}
 
   /* donor wall */
-  .wall{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+  .wall{list-style:none;margin:0;padding:0}
   .wall li{
     display:grid;grid-template-columns:1fr auto;gap:.2rem 1rem;
     padding:.95rem 0;border-bottom:1px solid var(--rule);align-items:baseline;
@@ -330,12 +330,19 @@
     padding-top:1rem;font-family:var(--sans);font-size:.9rem;color:var(--ink-soft);
     font-variation-settings:'wdth' 88,'wght' 600;
   }
-  .more-btn{
-    margin-top:1.2rem;font-family:var(--sans);font-variation-settings:'wdth' 88,'wght' 650;
-    font-size:.92rem;background:transparent;border:1px solid var(--rule);color:var(--ink);
-    padding:.5rem .95rem;border-radius:3px;cursor:pointer;
+
+  .wall-scroll{
+    position:relative;max-height:26rem;overflow-y:auto;
+    scroll-behavior:smooth;-webkit-overflow-scrolling:touch;
+    border-top:1px solid var(--rule);
+    /* fades the top and bottom edges so the cut-off reads as "more below", not a clipped bug */
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 1.25rem, #000 calc(100% - 1.25rem), transparent 100%);
+    mask-image:linear-gradient(to bottom, transparent 0, #000 1.25rem, #000 calc(100% - 1.25rem), transparent 100%);
   }
-  .more-btn:hover{border-color:var(--orange);color:var(--orange)}
+  .wall-scroll::-webkit-scrollbar{width:8px}
+  .wall-scroll::-webkit-scrollbar-track{background:transparent}
+  .wall-scroll::-webkit-scrollbar-thumb{background:var(--rule);border-radius:4px}
+  .wall-scroll:hover::-webkit-scrollbar-thumb{background:var(--ink-soft)}
 
   /* share */
   .band{background:var(--card);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
@@ -616,7 +623,7 @@
 
 <section class="letter">
   <div class="narrow">
-    <p class="opener">Recently, I was offered a last minute spot to fundraise and run the 2026 NYC Marathon on November 1 with Every Mother Counts &mdash; to which I gladly accepted.</p>
+    <p class="opener">Recently, I was offered a last minute spot to fundraise and run the 2026 NYC Marathon on November 1st with Every Mother Counts &mdash; to which I gladly accepted.</p>
 
     <p>My mom, Maureen, has always been my biggest supporter. She has believed in me, encouraged me, and cheered me on through every stage of my life. I&rsquo;m running this marathon for her, and for the belief that everyone deserves the chance to know and grow up with their mom.</p>
 
@@ -675,8 +682,9 @@
     <h2 class="section-title">The people behind the miles</h2>
     <p class="section-lede" style="margin-bottom:1.4rem">Everyone who has chipped in so far.</p>
 
-    <ul class="wall" id="wall"></ul>
-    <button class="more-btn" id="moreBtn" hidden>Show everyone</button>
+    <div class="wall-scroll" id="wallScroll">
+      <ul class="wall" id="wall"></ul>
+    </div>
     <div class="wall-foot"><span id="donorCount"></span></div>
   </div>
 </section>
@@ -739,16 +747,18 @@
       <div class="emc-stat"><b>2010</b><span>Founded by Christy Turlington Burns, after she nearly died giving birth</span></div>
       <div class="emc-stat"><b>$48M+</b><span>Invested in community-led programs, advocacy and awareness</span></div>
       <div class="emc-stat"><b>~2M</b><span>Women, families and health workers supported so far</span></div>
-      <div class="emc-stat"><b>2 min</b><span>How often a woman dies somewhere in the world from pregnancy or childbirth</span></div>
+      <div class="emc-stat"><b>700+</b><span>Women who die every day from pregnancy, childbirth or postpartum complications</span></div>
     </div>
 
     <div class="emc-cols">
       <div class="emc-body">
       <p>Every Mother Counts funds and partners with community-led maternal health programs. In practice that means training midwives and community health workers, covering the cost of getting a woman to a clinic, and equipping the facilities she arrives at. The organization also campaigns for policy change and works to put the issue in front of people who would otherwise never hear about it.</p>
 
-      <p>The problem is larger than most people assume. Somewhere in the world a woman dies roughly every two minutes from causes tied to pregnancy or childbirth, and most of those deaths are preventable. The United States has the highest maternal mortality rate of any wealthy country, and the burden falls hardest on Black and Indigenous women. This is not only a problem somewhere else.</p>
+      <p>The scale of the problem is hard to sit with. More than 700 women die every day from complications of pregnancy, childbirth, or the weeks after &mdash; roughly one woman every two minutes. Where a woman happens to live decides most of her risk: maternal deaths are concentrated overwhelmingly in the poorest parts of the world and in places affected by conflict, and in 2023, sub-Saharan Africa and South Asia together accounted for about 87% of them. The United States is not exempt. It has the highest maternal mortality rate of any wealthy nation despite spending more per person on healthcare than anywhere else, and Black and Indigenous women bear that risk disproportionately.</p>
 
-      <p>Since launching in 2010, Every Mother Counts has invested more than $48 million and reached close to two million women, families and health workers, working in the United States alongside Haiti, Uganda, Bangladesh, India, Tanzania and Guatemala. It was founded by Christy Turlington Burns, who hemorrhaged after her own daughter was born in 2003 and survived because she happened to be somewhere with people who knew what to do. She made a documentary about it, <em>No Woman, No Cry</em>, and then built the organization.</p>
+      <p>Almost all of these deaths are preventable with timely, respectful maternity care, and the world has made real progress &mdash; the global maternal mortality ratio fell by about 40% between 2000 and 2023. But that progress has stalled, and the number still remaining is not acceptable. This is the gap Every Mother Counts works inside: centering mothers, backing strategies that are proven to work, and mobilizing people to advocate for them.</p>
+
+      <p>Since launching in 2010, the organization has invested more than $48 million and reached close to two million women, families and health workers, working in the United States alongside Haiti, Uganda, Bangladesh, India, Tanzania and Guatemala. It was founded by Christy Turlington Burns, who hemorrhaged after her own daughter was born in 2003 and survived because she happened to be somewhere with people who knew what to do. She made a documentary about it, <em>No Woman, No Cry</em>, and then built the organization.</p>
       </div>
 
       <div class="emc-pull">
@@ -1065,15 +1075,14 @@
     });
   })();
 
-  var wallExpanded = false;
   function renderWall(){
-    var list = $("wall"), more = $("moreBtn"), LIMIT = 6;
+    var list = $("wall"), scroller = $("wallScroll");
     if(!list) return;
 
     if(!DONORS.length){
       list.innerHTML = '<li style="display:block"><em>No donations yet. Be the first name here.</em></li>';
       $("donorCount").textContent = "";
-      more.hidden = true;
+      if(scroller) scroller.style.maxHeight = "none";
       return;
     }
 
@@ -1082,7 +1091,12 @@
       return d !== 0 ? d : (b.id || 0) - (a.id || 0);
     });
 
-    var rows = wallExpanded ? DONORS : DONORS.slice(0, LIMIT);
+    // Short lists sit flush with no scroll; the box only kicks in once
+    // there's enough content to actually need it, so a handful of donors
+    // never sit inside an odd half-empty scroll well.
+    if(scroller) scroller.style.maxHeight = DONORS.length > 6 ? "" : "none";
+
+    var rows = DONORS;
     list.innerHTML = rows.map(function(d){
       var amt = (d.showAmount === false) ? "" :
         '<span class="d-amt">' + money(d.amount, d.amount % 1 !== 0) + '</span>';
@@ -1101,11 +1115,8 @@
     rows.filter(function(d){ return d.note; })
         .forEach(function(d, i){ if(noteEls[i]) noteEls[i].textContent = "\u201C" + d.note + "\u201D"; });
 
-    more.hidden = DONORS.length <= LIMIT;
-    more.textContent = wallExpanded ? "Show fewer" : "Show everyone";
     $("donorCount").textContent = DONORS.length + (DONORS.length === 1 ? " donation" : " donations") + " so far";
   }
-  $("moreBtn").addEventListener("click", function(){ wallExpanded = !wallExpanded; renderWall(); });
 
   function renderNotes(items){
     var grid = $("notesGrid"), empty = $("notesEmpty");
