@@ -313,7 +313,6 @@
     padding:.95rem 0;border-bottom:1px solid var(--rule);align-items:baseline;
   }
   .d-name{font-family:var(--sans);font-variation-settings:'wdth' 96,'wght' 700;font-size:1.02rem}
-  .d-name.anon{font-variation-settings:'wdth' 92,'wght' 550;color:var(--ink-soft);font-style:italic}
   .d-amt{
     font-family:var(--sans);font-variation-settings:'wdth' 90,'wght' 700;font-size:1.02rem;
     color:var(--orange);text-align:right;white-space:nowrap;
@@ -1106,7 +1105,7 @@
         new Date(d.date + "T12:00:00").toLocaleDateString("en-US", { month:"short", day:"numeric" }) : "";
       var match = d.matched ? '<span class="d-match">doubled to ' + money(d.matched) + '</span>' : "";
       var note = d.note ? '<span class="d-note"></span>' : "";
-      return '<li><span class="d-name' + (d.anon ? ' anon' : '') + '"></span>' + amt +
+      return '<li><span class="d-name"></span>' + amt +
              '<span class="d-meta">' + when + '</span>' + match + note + '</li>';
     }).join("");
 
@@ -1201,11 +1200,11 @@
       var total = 0;
       DONORS = objs.map(function(o, i){
         var amt = num(o.amount), mt = num(o.matched), hidden = yes(o.anon);
-        total += amt + mt;   // anonymous gifts still count toward the goal
+        total += amt + mt;   // hidden amounts still count toward the goal
         return {
           id: i + 1,
-          name: hidden ? "Anonymous" : o.name,
-          anon: hidden,
+          name: o.name,         // the name and any comment stay visible either way
+          anon: hidden,         // "anon" here only means "hide the dollar figure"
           amount: amt,
           showAmount: !hidden,
           matched: (mt > 0 && !hidden) ? amt + mt : 0,
