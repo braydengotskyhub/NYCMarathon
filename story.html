@@ -250,20 +250,64 @@
   h2c.onerror=function(){ $("dl").disabled=true; $("fallback").hidden=false; };
   document.head.appendChild(h2c);
 
+  function canvasToBlob(cv){
+    return new Promise(function(resolve){ cv.toBlob(function(b){ resolve(b); }, "image/png"); });
+  }
+
+  // Phones (iOS Safari especially) ignore the <a download> trick below and
+  // just open the image instead of saving it, so on a touch device this
+  // goes through the native share sheet instead, which has a real
+  // "Save Image" / "Save to Photos" action.
+  var isTouch = (navigator.maxTouchPoints||0) > 0 || "ontouchstart" in window;
+
   $("dl").addEventListener("click",function(){
     if(!window.html2canvas){ $("fallback").hidden=false; return; }
     var el = showing==="full" ? $("gFull") : $("gOver");
+    var name = showing==="full" ? "story-full.png" : "story-overlay.png";
     var prev = $("scaler").style.transform;
     $("scaler").style.transform="none";           // capture at true 1080x1920
+
+    $("dl").disabled = true; $("dl").textContent = "Preparing…";
+
     html2canvas(el,{width:1080,height:1920,scale:1,
                     backgroundColor: showing==="over" ? null : "#0C2438"})
       .then(function(cv){
         $("scaler").style.transform=prev;
-        var a=document.createElement("a");
-        a.download = showing==="full" ? "story-full.png" : "story-overlay.png";
-        a.href=cv.toDataURL("image/png"); a.click();
-      })["catch"](function(){ $("scaler").style.transform=prev; $("fallback").hidden=false; });
+        return canvasToBlob(cv).then(function(blob){
+
+          if(isTouch && navigator.canShare){
+            var file = new File([blob], name, {type:"image/png"});
+            if(navigator.canShare({files:[file]})){
+              return navigator.share({files:[file], title:name})["catch"](function(err){
+                // AbortError just means the person cancelled the share sheet, not a failure
+                if(err && err.name !== "AbortError") openInNewTab(blob);
+              });
+            }
+          }
+
+          if(isTouch){
+            // No Web Share support (some Android browsers): open the image
+            // full-screen so a long-press offers "Save Image" / "Download image".
+            openInNewTab(blob);
+            $("status").textContent = "Opened the image — press and hold it, then choose Save Image.";
+            return;
+          }
+
+          // Desktop: the <a download> trick works fine here.
+          var a=document.createElement("a");
+          a.download = name; a.href = URL.createObjectURL(blob); a.click();
+          setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+        });
+      })
+      ["catch"](function(){ $("scaler").style.transform=prev; $("fallback").hidden=false; })
+      ["finally"](function(){ $("dl").disabled=false; $("dl").textContent="Download PNG"; });
   });
+
+  function openInNewTab(blob){
+    var url = URL.createObjectURL(blob);
+    window.open(url, "_blank");
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
+  }
 
   // ---- go ----
   show("full"); paint(); fit();
